@@ -9,6 +9,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -81,6 +82,13 @@ public class RepositoryPatternService {
         RepositoryPatternEntity entity = repositoryPatternEntityMapper
                 .toRepositoryPatternEntity(repositoryPatternRequest);
         repository.persist(entity);
+        return repositoryPatternEntityMapper.toRepositoryPatternResponse(entity);
+    }
+
+    public RepositoryPatternResponse findById(UUID id) {
+        logger.log(Level.INFO, "Getting entity by {0} from database.", id);
+        RepositoryPatternEntity entity = repository
+                .findByIdOptional(id).orElseThrow(() -> new RuntimeException("Generic Exception"));
         return repositoryPatternEntityMapper.toRepositoryPatternResponse(entity);
     }
 

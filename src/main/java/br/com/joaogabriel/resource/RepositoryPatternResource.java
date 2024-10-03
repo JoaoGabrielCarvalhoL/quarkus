@@ -3,11 +3,10 @@ package br.com.joaogabriel.resource;
 import br.com.joaogabriel.payload.request.RepositoryPatternRequest;
 import br.com.joaogabriel.payload.response.RepositoryPatternResponse;
 import br.com.joaogabriel.service.RepositoryPatternService;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
+
+import java.util.UUID;
 
 @Path("/api/v1/repository")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -40,6 +39,13 @@ public class RepositoryPatternResource {
                 entity(saved)
                 .links(link)
                 .build();
+    }
+
+    @GET
+    @Path("/{id}")
+    public Response findById(@PathParam("id") UUID id) {
+        RepositoryPatternResponse entity = this.repositoryPatternService.findById(id);
+        return Response.ok().entity(entity).build();
     }
 
 }

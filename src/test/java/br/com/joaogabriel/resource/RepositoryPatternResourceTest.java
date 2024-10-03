@@ -17,6 +17,8 @@ public class RepositoryPatternResourceTest {
                 .when()
                 .post("/api/v1/repository")
                 .then()
+                .log()
+                .body()
                 .statusCode(201);
     }
 }
