@@ -3,6 +3,7 @@ package br.com.joaogabriel.resource;
 import br.com.joaogabriel.payload.request.RepositoryPatternRequest;
 import br.com.joaogabriel.payload.response.RepositoryPatternResponse;
 import br.com.joaogabriel.service.RepositoryPatternService;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 
@@ -26,13 +27,14 @@ public class RepositoryPatternResource {
      * */
 
     @POST
-    public Response save(RepositoryPatternRequest repositoryPatternRequest, @Context UriInfo uriInfo) {
+    public Response save(@Valid RepositoryPatternRequest repositoryPatternRequest, @Context UriInfo uriInfo) {
         RepositoryPatternResponse saved = this.repositoryPatternService.save(repositoryPatternRequest);
         UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
         Link link = Link.fromUri(uriBuilder.path(saved.id().toString()).build()).rel("self").build();
 
         /**
          * Creating a Header Location and Link. Ambiguous maybe
+         * https://dennis-xlc.gitbooks.io/restful-java-with-jax-rs-2-0-2rd-edition/content/en/part1/chapter10/building_links_and_link_headers.html
          * */
 
         return Response.created(uriBuilder.build()).

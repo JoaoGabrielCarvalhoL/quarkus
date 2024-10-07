@@ -1,5 +1,6 @@
 package br.com.joaogabriel.service;
 
+import br.com.joaogabriel.exception.ResourceNotFoundException;
 import br.com.joaogabriel.mapper.RepositoryPatternEntityMapper;
 import br.com.joaogabriel.pattern.repository.RepositoryPattern;
 import br.com.joaogabriel.pattern.repository.RepositoryPatternEntity;
@@ -88,7 +89,7 @@ public class RepositoryPatternService {
     public RepositoryPatternResponse findById(UUID id) {
         logger.log(Level.INFO, "Getting entity by {0} from database.", id);
         RepositoryPatternEntity entity = repository
-                .findByIdOptional(id).orElseThrow(() -> new RuntimeException("Generic Exception"));
+                .findByIdOptional(id).orElseThrow(() -> new ResourceNotFoundException("Entity not found into database. Id: " + id));
         return repositoryPatternEntityMapper.toRepositoryPatternResponse(entity);
     }
 
