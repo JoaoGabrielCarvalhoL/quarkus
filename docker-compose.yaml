@@ -15,6 +15,20 @@ services:
     networks:
       - quarkus-network
 
+  keycloak-postgres-db:
+    image: 'postgres:latest'
+    restart: always
+    environment:
+      POSTGRES_USER: development
+      POSTGRES_PASSWORD: development
+      PGDATA: /var/lib/postgresql/data-keycloak
+      POSTGRES_DB: keycloak-quarkus-db
+    volumes:
+      - ./data-keycloak:/var/lib/postgresql/data
+    ports:
+      - '5435:5432'
+    networks:
+      - quarkus-network
 
   pgadmin:
     image: dpage/pgadmin4
@@ -28,6 +42,28 @@ services:
       - postgres-db
     networks:
       - quarkus-network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    command:
+      - start-dev
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak-quarkus-db
+      DB_USER: development
+      DB_PASSWORD: development
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HTTP_ENABLED: true
+    ports:
+      - '8085:8080'
+    restart: always
+    depends_on:
+      - keycloak-postgres-db
+    networks:
+      - quarkus-network
+
 
 networks:
   quarkus-network:
