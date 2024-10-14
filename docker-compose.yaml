@@ -1,6 +1,6 @@
 services:
 
-  postgres-db:
+  postgres-quarkus-db:
     image: 'postgres:latest'
     restart: always
     environment:
@@ -39,7 +39,7 @@ services:
     ports:
       - '15434:80'
     depends_on:
-      - postgres-db
+      - postgres-quarkus-db
     networks:
       - quarkus-network
 
@@ -53,11 +53,11 @@ services:
       DB_DATABASE: keycloak-quarkus-db
       DB_USER: development
       DB_PASSWORD: development
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_BOOTSTRAP_ADMIN_USERNAME: development
+      KC_BOOTSTRAP_ADMIN_PASSWORD: development
       KC_HTTP_ENABLED: true
     ports:
-      - '8085:8080'
+      - "8085:8080"
     restart: always
     depends_on:
       - keycloak-postgres-db
