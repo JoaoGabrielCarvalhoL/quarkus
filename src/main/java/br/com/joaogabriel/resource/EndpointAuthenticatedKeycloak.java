@@ -1,6 +1,7 @@
 package br.com.joaogabriel.resource;
 
 import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -15,6 +16,7 @@ import jakarta.ws.rs.core.SecurityContext;
 public class EndpointAuthenticatedKeycloak {
 
     @GET
+    @RolesAllowed({"admin"})
     public Response response(@Context SecurityContext securityContext) {
         return Response.status(Response.Status.OK).entity(securityContext.getUserPrincipal()).build();
 
